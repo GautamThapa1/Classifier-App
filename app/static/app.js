@@ -79,11 +79,11 @@ function renderRows() {
   $("rows").innerHTML = shown.map(t => {
     const x = t.triage;
     return `<tr class="border-t hover:bg-slate-50 cursor-pointer" data-id="${esc(t.id)}">
-      <td class="p-3 text-slate-500">${esc(t.id)}</td>
-      <td class="p-3 max-w-md truncate">${esc(t.message)}</td>
-      <td class="p-3">${x ? badge(x.urgency) : badge("Failed")}</td>
-      <td class="p-3">${x ? esc(x.category) : "—"}</td>
-      <td class="p-3">${x ? badge(x.sentiment) : "—"}</td></tr>`;
+      <td data-label="ID" class="p-3 text-slate-500">${esc(t.id)}</td>
+      <td data-label="Message" class="p-3 max-w-md whitespace-normal break-words">${esc(t.message)}</td>
+      <td data-label="Urgency" class="p-3">${x ? badge(x.urgency) : badge("Failed")}</td>
+      <td data-label="Category" class="p-3">${x ? esc(x.category) : "—"}</td>
+      <td data-label="Sentiment" class="p-3">${x ? badge(x.sentiment) : "—"}</td></tr>`;
   }).join("");
   renderPager(r.length, start, shown.length);
 }

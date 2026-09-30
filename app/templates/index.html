@@ -20,6 +20,42 @@
     .sel:hover { border-color: #94a3b8; }
     .sel:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 3px #e0e7ff; }
     .sel option { font-size: .875rem; }
+    .chart-frame { position: relative; width: 100%; min-width: 0; height: 13rem; }
+    .chart-frame canvas { display: block; max-width: 100%; }
+    @media (max-width: 767px) {
+      #ticketsTable { display: block; min-width: 0; }
+      #ticketsTable thead { display: none; }
+      #ticketsTable tbody { display: grid; gap: .75rem; padding: .75rem; }
+      #ticketsTable tr {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: .25rem;
+        border: 1px solid #e2e8f0;
+        border-radius: .5rem;
+        overflow: hidden;
+      }
+      #ticketsTable td { min-width: 0; padding: .5rem; white-space: normal; }
+      #ticketsTable td:first-child {
+        grid-column: 1 / -1;
+        border-bottom: 1px solid #e2e8f0;
+        font-weight: 600;
+      }
+      #ticketsTable td:nth-child(2) {
+        grid-column: 1 / -1;
+        max-width: none;
+        overflow-wrap: anywhere;
+        line-height: 1.5;
+      }
+      #ticketsTable td:nth-child(n+3)::before {
+        display: block;
+        margin-bottom: .25rem;
+        color: #64748b;
+        font-size: .625rem;
+      }
+      #ticketsTable td:nth-child(3)::before { content: "Urgency"; }
+      #ticketsTable td:nth-child(4)::before { content: "Category"; }
+      #ticketsTable td:nth-child(5)::before { content: "Sentiment"; }
+    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
@@ -29,11 +65,11 @@
         <h1 class="text-xl font-semibold">Ticket Triage</h1>
         <p class="text-sm text-slate-500">AI-assisted support dashboard <span id="ver" class="ml-1 text-xs bg-slate-100 rounded px-2 py-0.5"></span></p>
       </div>
-      <div class="flex gap-2">
-        <label class="cursor-pointer px-3 py-2 text-sm border rounded-lg hover:bg-slate-50">
+      <div class="flex w-full gap-2 sm:w-auto">
+        <label class="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-lg border px-3 py-2 text-sm hover:bg-slate-50 sm:flex-none">
           Upload JSON <input id="fileIn" type="file" accept=".json" class="hidden">
         </label>
-        <button id="runBtn" class="px-3 py-2 text-sm rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50">
+        <button id="runBtn" class="min-h-11 flex-1 rounded-lg bg-indigo-600 px-3 py-2 text-sm text-white hover:bg-indigo-700 disabled:opacity-50 sm:flex-none">
           Run sample batch
         </button>
       </div>
@@ -50,22 +86,22 @@
     <div id="dash" class="hidden space-y-6">
       <section id="kpis" class="grid grid-cols-2 md:grid-cols-4 gap-3"></section>
 
-      <section class="grid md:grid-cols-3 gap-3">
-        <div class="bg-white border rounded-xl p-4"><h3 class="text-sm font-medium mb-2">Urgency</h3><div class="h-52"><canvas id="cUrg"></canvas></div></div>
-        <div class="bg-white border rounded-xl p-4"><h3 class="text-sm font-medium mb-2">Category</h3><div class="h-52"><canvas id="cCat"></canvas></div></div>
-        <div class="bg-white border rounded-xl p-4"><h3 class="text-sm font-medium mb-2">Sentiment</h3><div class="h-52"><canvas id="cSen"></canvas></div></div>
+      <section class="grid min-w-0 grid-cols-1 gap-3 md:grid-cols-3">
+        <div class="min-w-0 overflow-hidden rounded-xl border bg-white p-4"><h3 class="mb-2 text-sm font-medium">Urgency</h3><div class="chart-frame"><canvas id="cUrg"></canvas></div></div>
+        <div class="min-w-0 overflow-hidden rounded-xl border bg-white p-4"><h3 class="mb-2 text-sm font-medium">Category</h3><div class="chart-frame"><canvas id="cCat"></canvas></div></div>
+        <div class="min-w-0 overflow-hidden rounded-xl border bg-white p-4"><h3 class="mb-2 text-sm font-medium">Sentiment</h3><div class="chart-frame"><canvas id="cSen"></canvas></div></div>
       </section>
 
       <section class="bg-white border rounded-xl">
-        <div class="p-3 border-b flex flex-wrap gap-2 text-sm">
-          <input id="fQ" placeholder="Search messages…" class="border rounded-lg px-3 py-2 flex-1 min-w-40">
-          <select id="fUrg" class="sel"><option value="">All urgency</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
-          <select id="fCat" class="sel"><option value="">All categories</option></select>
-          <select id="fSen" class="sel"><option value="">All sentiment</option><option>Angry</option><option>Frustrated</option><option>Anxious</option><option>Neutral</option><option>Happy</option></select>
-          <select id="fSort" class="sel"><option value="urgency">Sort: urgency</option><option value="id">Sort: ID</option></select>
+        <div class="grid grid-cols-2 gap-2 border-b p-3 text-sm sm:grid-cols-3 md:flex md:flex-wrap">
+          <input id="fQ" placeholder="Search messages…" class="col-span-2 min-w-0 rounded-lg border px-3 py-2 md:min-w-40 md:flex-1">
+          <select id="fUrg" class="sel w-full min-w-0 md:w-auto"><option value="">All urgency</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
+          <select id="fCat" class="sel w-full min-w-0 md:w-auto"><option value="">All categories</option></select>
+          <select id="fSen" class="sel w-full min-w-0 md:w-auto"><option value="">All sentiment</option><option>Angry</option><option>Frustrated</option><option>Anxious</option><option>Neutral</option><option>Happy</option></select>
+          <select id="fSort" class="sel w-full min-w-0 md:w-auto"><option value="urgency">Sort: urgency</option><option value="id">Sort: ID</option></select>
         </div>
         <div class="overflow-x-auto">
-          <table class="w-full text-sm">
+          <table id="ticketsTable" class="w-full text-sm md:min-w-[42rem]">
             <thead class="text-left text-slate-500 bg-slate-50">
               <tr><th class="p-3">ID</th><th class="p-3">Message</th><th class="p-3">Urgency</th><th class="p-3">Category</th><th class="p-3">Sentiment</th></tr>
             </thead>
