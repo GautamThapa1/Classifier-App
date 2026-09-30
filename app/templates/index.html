@@ -6,7 +6,59 @@
   <title>Caregene Ticket Triage</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script>document.documentElement.dataset.theme = localStorage.getItem("caregene-theme") === "dark" ? "dark" : "light";</script>
   <style>
+    :root {
+      color-scheme: light;
+      --page-bg: #f8fafc;
+      --surface-bg: #fff;
+      --muted-bg: #f1f5f9;
+      --main-text: #1e293b;
+      --muted-text: #64748b;
+      --border-color: #e2e8f0;
+    }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --page-bg: #0f172a;
+      --surface-bg: #172033;
+      --muted-bg: #1e293b;
+      --main-text: #e2e8f0;
+      --muted-text: #a7b3c5;
+      --border-color: #334155;
+    }
+    body { background-color: var(--page-bg) !important; color: var(--main-text) !important; }
+    .bg-white { background-color: var(--surface-bg) !important; }
+    .bg-slate-50 { background-color: var(--muted-bg) !important; }
+    .text-slate-800 { color: var(--main-text) !important; }
+    .text-slate-500, .text-slate-400 { color: var(--muted-text) !important; }
+    .border, .border-b, .border-t { border-color: var(--border-color) !important; }
+    input:not([type="checkbox"]), textarea { background-color: var(--surface-bg); color: var(--main-text); border-color: var(--border-color); }
+    #drawer { background-color: var(--surface-bg); color: var(--main-text); }
+    :root[data-theme="dark"] .sel { background-color: var(--surface-bg); color: var(--main-text); border-color: var(--border-color); }
+    :root[data-theme="dark"] .sel:focus { box-shadow: 0 0 0 3px #3730a3; }
+    :root[data-theme="dark"] .bg-slate-100 { background-color: #273449 !important; }
+    :root[data-theme="dark"] .text-slate-700, :root[data-theme="dark"] .text-slate-600 { color: #cbd5e1 !important; }
+    :root[data-theme="dark"] .bg-red-50 { background-color: #3f1e29 !important; }
+    :root[data-theme="dark"] .text-red-700 { color: #fda4af !important; }
+    :root[data-theme="dark"] .bg-red-100 { background-color: #4c2633 !important; }
+    :root[data-theme="dark"] .text-orange-700 { color: #fdba74 !important; }
+    :root[data-theme="dark"] .bg-orange-100 { background-color: #4d3322 !important; }
+    :root[data-theme="dark"] .text-yellow-700 { color: #fde047 !important; }
+    :root[data-theme="dark"] .bg-yellow-100 { background-color: #4b421f !important; }
+    :root[data-theme="dark"] .text-green-700 { color: #86efac !important; }
+    :root[data-theme="dark"] .bg-green-100 { background-color: #1f4234 !important; }
+    :root[data-theme="dark"] .text-purple-700 { color: #d8b4fe !important; }
+    :root[data-theme="dark"] .bg-purple-100 { background-color: #392b56 !important; }
+    :root[data-theme="dark"] .hover\:bg-slate-50:hover { background-color: #273449 !important; }
+    :root[data-theme="dark"] #ticketsTable tr { border-color: var(--border-color); }
+    :root[data-theme="dark"] #ticketsTable td:first-child { border-bottom-color: var(--border-color); }
+    :root[data-theme="dark"] #ticketsTable td:nth-child(n+3)::before { color: var(--muted-text); }
+    .theme-control { display: flex; min-height: 2.75rem; align-items: center; gap: .55rem; color: var(--main-text); font-size: .875rem; cursor: pointer; }
+    .theme-toggle { appearance: none; position: relative; flex: none; width: 2.75rem; height: 1.5rem; border: 1px solid #cbd5e1; border-radius: 999px; background: #cbd5e1; cursor: pointer; transition: background-color .18s, border-color .18s; }
+    .theme-toggle::after { content: ""; position: absolute; top: 3px; left: 3px; width: 1rem; height: 1rem; border-radius: 50%; background: #fff; transition: transform .18s; }
+    .theme-toggle:checked { border-color: #4f46e5; background: #4f46e5; }
+    .theme-toggle:checked::after { transform: translateX(1.25rem); }
+    .theme-toggle:focus-visible { outline: 3px solid #a5b4fc; outline-offset: 2px; }
     .sel {
       appearance: none;
       background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2364748b'%3E%3Cpath d='M5.3 7.3a1 1 0 0 1 1.4 0L10 10.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.4z'/%3E%3C/svg%3E") no-repeat right .6rem center / 1rem;
@@ -65,13 +117,16 @@
         <h1 class="text-xl font-semibold">Ticket Triage</h1>
         <p class="text-sm text-slate-500">AI-assisted support dashboard <span id="ver" class="ml-1 text-xs bg-slate-100 rounded px-2 py-0.5"></span></p>
       </div>
-      <div class="flex w-full gap-2 sm:w-auto">
+      <div class="flex w-full flex-wrap items-center justify-between gap-2 sm:w-auto sm:flex-nowrap">
+        <label class="theme-control" for="themeToggle">Dark mode <input id="themeToggle" class="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode"></label>
+        <div class="flex w-full gap-2 sm:w-auto">
         <label class="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-lg border px-3 py-2 text-sm hover:bg-slate-50 sm:flex-none">
           Upload JSON <input id="fileIn" type="file" accept=".json" class="hidden">
         </label>
         <button id="runBtn" class="min-h-11 flex-1 rounded-lg bg-indigo-600 px-3 py-2 text-sm text-white hover:bg-indigo-700 disabled:opacity-50 sm:flex-none">
           Run sample batch
         </button>
+        </div>
       </div>
     </div>
   </header>

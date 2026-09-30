@@ -15,6 +15,19 @@ let data = { tickets: [], stats: null };
 const PAGE = 15;
 let page = 1;
 const charts = {};
+const themeToggle = $("themeToggle");
+
+function setTheme(isDark, persist = true) {
+  document.documentElement.dataset.theme = isDark ? "dark" : "light";
+  themeToggle.checked = isDark;
+  if (persist) localStorage.setItem("caregene-theme", isDark ? "dark" : "light");
+  Chart.defaults.color = isDark ? "#cbd5e1" : "#334155";
+  Chart.defaults.borderColor = isDark ? "#334155" : "#e2e8f0";
+  Object.values(charts).forEach(instance => instance.update("none"));
+}
+
+setTheme(document.documentElement.dataset.theme === "dark", false);
+themeToggle.addEventListener("change", () => setTheme(themeToggle.checked));
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const badge = v => `<span class="px-2 py-0.5 rounded-full text-xs font-medium ${BADGE[v] || "bg-slate-100 text-slate-600"}">${esc(v)}</span>`;
