@@ -71,7 +71,7 @@ def results():
 
 @app.post("/api/triage")
 def triage(payload: Any = Body(default=None)):
-    raw = payload if payload else json.loads(DATA.read_text())
+    raw = json.loads(DATA.read_text()) if payload is None or payload == {} else payload
     tickets = triage_batch(normalize(raw))
     result = {"tickets": tickets, "stats": build_stats(tickets)}
     return save_run(result)

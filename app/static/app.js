@@ -12,6 +12,8 @@ const HEX = {
   Angry: "#dc2626", Frustrated: "#f97316", Anxious: "#a855f7", Neutral: "#94a3b8", Happy: "#22c55e",
 };
 let data = { tickets: [], stats: null };
+const PAGE = 15;
+let page = 1;
 const charts = {};
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -33,6 +35,7 @@ function kpi(label, value, sub = "") {
 }
 
 function render() {
+  page = 1;
   const s = data.stats, has = data.tickets.length > 0;
   $("empty").classList.toggle("hidden", has);
   $("dash").classList.toggle("hidden", !has);
@@ -69,7 +72,11 @@ function renderRows() {
     : (RANK[a.triage?.urgency] ?? 9) - (RANK[b.triage?.urgency] ?? 9));
 
   $("none").classList.toggle("hidden", r.length > 0);
-  $("rows").innerHTML = r.map(t => {
+  const pages = Math.max(1, Math.ceil(r.length / PAGE));
+  page = Math.min(page, pages);
+  const start = (page - 1) * PAGE;
+  const shown = r.slice(start, start + PAGE);
+  $("rows").innerHTML = shown.map(t => {
     const x = t.triage;
     return `<tr class="border-t hover:bg-slate-50 cursor-pointer" data-id="${esc(t.id)}">
       <td class="p-3 text-slate-500">${esc(t.id)}</td>
@@ -78,6 +85,24 @@ function renderRows() {
       <td class="p-3">${x ? esc(x.category) : "—"}</td>
       <td class="p-3">${x ? badge(x.sentiment) : "—"}</td></tr>`;
   }).join("");
+  renderPager(r.length, start, shown.length);
+}
+
+function renderPager(total, start, shown) {
+  const pages = Math.max(1, Math.ceil(total / PAGE));
+  const btn = "px-3 py-1.5 border rounded-lg hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed";
+  $("pager").classList.toggle("hidden", total === 0);
+  $("pager").innerHTML = `<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <span>Showing ${start + 1}–${start + shown} of ${total}</span>
+    ${pages > 1 ? `<div class="flex items-center gap-2">
+      <button id="prev" class="${btn}" ${page === 1 ? "disabled" : ""}>Previous</button>
+      <span>Page ${page} of ${pages}</span>
+      <button id="next" class="${btn}" ${page === pages ? "disabled" : ""}>Next</button>
+    </div>` : ""}
+  </div>`;
+  const go = n => { page = n; renderRows(); $("pager").closest("section").scrollIntoView({ behavior: "smooth", block: "start" }); };
+  if ($("prev")) $("prev").onclick = () => go(page - 1);
+  if ($("next")) $("next").onclick = () => go(page + 1);
 }
 
 function openDetail(id) {
@@ -134,7 +159,7 @@ $("fileIn").onchange = async e => {
   try { run(JSON.parse(await f.text())); } catch { show("That file isn't valid JSON."); }
   e.target.value = "";
 };
-["fQ", "fUrg", "fCat", "fSen", "fSort"].forEach(id => $(id).addEventListener("input", renderRows));
+["fQ", "fUrg", "fCat", "fSen", "fSort"].forEach(id => $(id).addEventListener("input", () => { page = 1; renderRows(); }));
 $("rows").onclick = e => { const tr = e.target.closest("tr"); if (tr) openDetail(tr.dataset.id); };
 $("overlay").onclick = closeDetail;
 

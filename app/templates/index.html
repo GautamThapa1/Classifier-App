@@ -6,6 +6,21 @@
   <title>Caregene Ticket Triage</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <style>
+    .sel {
+      appearance: none;
+      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2364748b'%3E%3Cpath d='M5.3 7.3a1 1 0 0 1 1.4 0L10 10.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.4z'/%3E%3C/svg%3E") no-repeat right .6rem center / 1rem;
+      padding: .5rem 2rem .5rem .75rem;
+      border: 1px solid #cbd5e1;
+      border-radius: .5rem;
+      font-size: .875rem;
+      color: #334155;
+      cursor: pointer;
+    }
+    .sel:hover { border-color: #94a3b8; }
+    .sel:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 3px #e0e7ff; }
+    .sel option { font-size: .875rem; }
+  </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
   <header class="bg-white border-b">
@@ -44,10 +59,10 @@
       <section class="bg-white border rounded-xl">
         <div class="p-3 border-b flex flex-wrap gap-2 text-sm">
           <input id="fQ" placeholder="Search messages…" class="border rounded-lg px-3 py-2 flex-1 min-w-40">
-          <select id="fUrg" class="border rounded-lg px-2 py-2"><option value="">All urgency</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
-          <select id="fCat" class="border rounded-lg px-2 py-2"><option value="">All categories</option></select>
-          <select id="fSen" class="border rounded-lg px-2 py-2"><option value="">All sentiment</option><option>Angry</option><option>Frustrated</option><option>Anxious</option><option>Neutral</option><option>Happy</option></select>
-          <select id="fSort" class="border rounded-lg px-2 py-2"><option value="urgency">Sort: urgency</option><option value="id">Sort: ID</option></select>
+          <select id="fUrg" class="sel"><option value="">All urgency</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
+          <select id="fCat" class="sel"><option value="">All categories</option></select>
+          <select id="fSen" class="sel"><option value="">All sentiment</option><option>Angry</option><option>Frustrated</option><option>Anxious</option><option>Neutral</option><option>Happy</option></select>
+          <select id="fSort" class="sel"><option value="urgency">Sort: urgency</option><option value="id">Sort: ID</option></select>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-sm">
@@ -58,6 +73,7 @@
           </table>
         </div>
         <p id="none" class="hidden p-6 text-center text-slate-500 text-sm">No tickets match these filters.</p>
+        <div id="pager" class="border-t px-4 py-3 text-sm text-slate-600"></div>
       </section>
     </div>
   </main>
@@ -65,6 +81,6 @@
   <div id="overlay" class="hidden fixed inset-0 bg-black/30"></div>
   <aside id="drawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-xl translate-x-full transition-transform overflow-y-auto p-5"></aside>
 
-  <script src="/static/app.js"></script>
+  <script src="/static/app.js?v=2"></script>
 </body>
 </html>
