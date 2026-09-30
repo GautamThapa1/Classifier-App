@@ -1,0 +1,292 @@
+{
+  "tickets": [
+    {
+      "id": 1,
+      "message": "The app crashed during the update and now all of my mother's medication reminders are gone. She missed her evening insulin dose because of this. Fix this immediately.",
+      "triage": {
+        "reasoning": "The app crash led to missed medication, which poses a risk to health.",
+        "urgency": "Critical",
+        "category": "Technical",
+        "sentiment": "Angry",
+        "confidence": "High",
+        "suggested_reply": "I'm sorry to hear about the app crash and the missed insulin dose. This is a critical issue, and I will escalate it to our human team immediately for urgent review. Please hold on while we address this situation. \n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 2,
+      "message": "I have been charged twice for my Premium subscription this month. I want the duplicate charge refunded right away.",
+      "triage": {
+        "reasoning": "The customer reports a double charge, which is a high urgency issue.",
+        "urgency": "High",
+        "category": "Billing",
+        "sentiment": "Frustrated",
+        "confidence": "High",
+        "suggested_reply": "I understand your concern about being charged twice for your Premium subscription. Our team will investigate the duplicate charge and get back to you as soon as possible. Thank you for your patience. \n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 3,
+      "message": "How do I add a second caregiver to my father's profile? I want my sister to also get his alerts.",
+      "triage": {
+        "reasoning": "This is a question about using the app's features, which is not urgent.",
+        "urgency": "Low",
+        "category": "How-To",
+        "sentiment": "Neutral",
+        "confidence": "High",
+        "suggested_reply": "Thank you for reaching out! An agent will confirm the steps to add a second caregiver to your father's profile so your sister can receive alerts as well. \n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 4,
+      "message": "Just wanted to say the new medication tracking feature is fantastic. It has made caring for my grandmother so much easier. Thank you!",
+      "triage": {
+        "reasoning": "The message expresses praise for a feature, indicating a positive experience.",
+        "urgency": "Low",
+        "category": "Feedback",
+        "sentiment": "Happy",
+        "confidence": "High",
+        "suggested_reply": "Thank you for your kind words! We're thrilled to hear that the new medication tracking feature is making caregiving easier for you and your grandmother. Your feedback is greatly appreciated! \n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 5,
+      "message": "Emergency fall alerts are NOT reaching my phone. My dad fell yesterday and I received no notification at all. This is unacceptable for a health app.",
+      "triage": {
+        "reasoning": "This is a critical issue as it directly impacts the safety of a patient.",
+        "urgency": "Critical",
+        "category": "Technical",
+        "sentiment": "Frustrated",
+        "confidence": "High",
+        "suggested_reply": "I'm very sorry to hear that you're not receiving emergency fall alerts. This is a critical issue, and I will escalate it to our human team immediately to investigate. Your father's safety is our priority, and we appreciate your patience as we look into this matter. \n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 6,
+      "message": "I cannot log in. It keeps saying \"invalid credentials\" even after I reset my password twice. Please help.",
+      "triage": {
+        "reasoning": "The user is locked out of their account, which is a high urgency issue.",
+        "urgency": "High",
+        "category": "Account",
+        "sentiment": "Frustrated",
+        "confidence": "High",
+        "suggested_reply": "I'm sorry to hear you're having trouble logging in. It sounds frustrating to deal with invalid credentials after resetting your password. Our team will investigate this issue and assist you further. Please hold on while we look into it. \n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 7,
+      "message": "Can I switch from monthly to annual billing? Is there a discount if I pay yearly?",
+      "triage": {
+        "reasoning": "The customer is asking about billing options, which is a low urgency inquiry.",
+        "urgency": "Low",
+        "category": "Billing",
+        "sentiment": "Neutral",
+        "confidence": "High",
+        "suggested_reply": "Thank you for your inquiry about switching to annual billing. An agent will review your request and provide you with the details regarding any potential discounts for yearly payments. \n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 8,
+      "message": "How do I change the app language to Nepali? My mother is not comfortable reading English.",
+      "triage": {
+        "reasoning": "This is a request for assistance with app settings, which is not urgent.",
+        "urgency": "Low",
+        "category": "How-To",
+        "sentiment": "Neutral",
+        "confidence": "High",
+        "suggested_reply": "I understand that your mother needs the app in Nepali. An agent will confirm and share the exact steps to change the app language for you. \n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 9,
+      "message": "The pill scanner stopped recognising my father's medications after the latest update. It worked fine last week.",
+      "triage": {
+        "reasoning": "This issue affects a core feature of the app, impacting medication management.",
+        "urgency": "Medium",
+        "category": "Technical",
+        "sentiment": "Frustrated",
+        "confidence": "Medium",
+        "suggested_reply": "I'm sorry to hear that the pill scanner is not recognizing your father's medications after the update. Our team will investigate this issue to find a solution. If you have any additional details, please share them."
+      },
+      "error": null
+    },
+    {
+      "id": 10,
+      "message": "It would be great if the app could sync with my Apple Watch so I get reminders on my wrist.",
+      "triage": {
+        "reasoning": "This is a feature request for an enhancement to the app.",
+        "urgency": "Low",
+        "category": "Feature Request",
+        "sentiment": "Neutral",
+        "confidence": "High",
+        "suggested_reply": "Thank you for your suggestion! We appreciate your feedback about syncing with Apple Watch for reminders. Our team will review this idea for future updates. \n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 11,
+      "message": "Someone has accessed my account and changed my mother's health records without permission. I need this account locked down immediately.",
+      "triage": {
+        "reasoning": "Unauthorized access to an account poses a critical risk to health data security.",
+        "urgency": "Critical",
+        "category": "Account",
+        "sentiment": "Angry",
+        "confidence": "High",
+        "suggested_reply": "I understand your concern about unauthorized access to your account. This situation is being escalated to our security team now to ensure your account is locked down and your mother's health records are protected. Please hold on while we address this urgent matter.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 12,
+      "message": "The support agent who helped me last week was excellent and very patient. Really appreciate the great service.",
+      "triage": {
+        "reasoning": "The message expresses praise for the service received, indicating a positive experience.",
+        "urgency": "Low",
+        "category": "Feedback",
+        "sentiment": "Happy",
+        "confidence": "High",
+        "suggested_reply": "Thank you for your kind words! We're glad to hear that you had a positive experience with our support team. Your feedback is greatly appreciated and helps us continue to improve our service. \n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 13,
+      "message": "The dashboard is very slow to load. It takes almost 30 seconds every single time I open the app.",
+      "triage": {
+        "reasoning": "The issue described is a performance problem that affects usability but does not block care.",
+        "urgency": "Medium",
+        "category": "Technical",
+        "sentiment": "Frustrated",
+        "confidence": "High",
+        "suggested_reply": "I'm sorry to hear that the dashboard is slow to load. Our team will investigate this issue to improve your experience. Thank you for your patience as we work on it."
+      },
+      "error": null
+    },
+    {
+      "id": 14,
+      "message": "I cancelled my subscription last month but you are STILL charging my card. This feels like fraud and I want it stopped now.",
+      "triage": {
+        "reasoning": "The customer reports unauthorized charges after cancellation, indicating a high urgency.",
+        "urgency": "High",
+        "category": "Billing",
+        "sentiment": "Angry",
+        "confidence": "High",
+        "suggested_reply": "I'm sorry to hear about the charges you're seeing after your cancellation. This is concerning, and I will escalate this to our billing team for immediate review. Please provide any additional details you have about the cancellation if possible. \n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 15,
+      "message": "Where can I download my father's health report as a PDF to share with his doctor?",
+      "triage": {
+        "reasoning": "This is a general inquiry about accessing a feature.",
+        "urgency": "Low",
+        "category": "How-To",
+        "sentiment": "Neutral",
+        "confidence": "High",
+        "suggested_reply": "I understand you're looking to download your father's health report. An agent will confirm and share the exact steps to help you with this."
+      },
+      "error": null
+    },
+    {
+      "id": 16,
+      "message": "The reminder notifications arrive about 10 minutes late every time. Can this timing be fixed?",
+      "triage": {
+        "reasoning": "The issue with reminder notifications is a bug that affects user experience but does not block care.",
+        "urgency": "Medium",
+        "category": "Technical",
+        "sentiment": "Frustrated",
+        "confidence": "Medium",
+        "suggested_reply": "I understand that the reminder notifications are arriving late, and I can see how that would be frustrating. Our team will review this issue to see how we can improve the timing. Thank you for your patience as we work on this."
+      },
+      "error": null
+    },
+    {
+      "id": 17,
+      "message": "The video call with the doctor kept dropping and we could not finish the consultation. Very frustrating.",
+      "triage": {
+        "reasoning": "The issue with the video call is causing frustration but does not block care entirely.",
+        "urgency": "Medium",
+        "category": "Technical",
+        "sentiment": "Frustrated",
+        "confidence": "Medium",
+        "suggested_reply": "I'm sorry to hear that your video call with the doctor was interrupted. Our team will review this issue to improve your experience. If you have any additional details about the problem, please share them with us. \n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 18,
+      "message": "I love the new interface redesign. It is much easier for my grandmother to navigate on her own now.",
+      "triage": {
+        "reasoning": "The message expresses positive feedback about the interface redesign.",
+        "urgency": "Low",
+        "category": "Feedback",
+        "sentiment": "Happy",
+        "confidence": "High",
+        "suggested_reply": "Thank you for your kind words! We're thrilled to hear that the new interface is making it easier for your grandmother to navigate. Your feedback is greatly appreciated! \n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 19,
+      "message": "Do you offer a family plan that covers multiple patients under one account?",
+      "triage": {
+        "reasoning": "This is a question about service offerings, which is not urgent.",
+        "urgency": "Low",
+        "category": "Billing",
+        "sentiment": "Neutral",
+        "confidence": "High",
+        "suggested_reply": "Thank you for your inquiry about family plans. An agent will review your question and provide you with the necessary information regarding coverage for multiple patients under one account. \n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 20,
+      "message": "All of my mother's health data has disappeared from the app. Months of blood pressure and glucose logs, gone. Please help urgently, we need that history for her appointment tomorrow.",
+      "triage": {
+        "reasoning": "The disappearance of health data is critical as it impacts the patient's care and upcoming appointment.",
+        "urgency": "Critical",
+        "category": "Technical",
+        "sentiment": "Anxious",
+        "confidence": "High",
+        "suggested_reply": "I'm sorry to hear that your mother's health data has disappeared. This is being escalated to our human team now to address the issue urgently, especially with her appointment tomorrow. Please hold on while we investigate this matter further.\n\nCaregene Support"
+      },
+      "error": null
+    }
+  ],
+  "stats": {
+    "total": 20,
+    "failed": 0,
+    "urgency": {
+      "Critical": 4,
+      "High": 3,
+      "Low": 9,
+      "Medium": 4
+    },
+    "category": {
+      "Technical": 7,
+      "Billing": 4,
+      "How-To": 3,
+      "Feedback": 3,
+      "Account": 2,
+      "Feature Request": 1
+    },
+    "sentiment": {
+      "Angry": 3,
+      "Frustrated": 7,
+      "Neutral": 6,
+      "Happy": 3,
+      "Anxious": 1
+    },
+    "low_confidence": 0
+  },
+  "version": "v2",
+  "model": "gpt-4o-mini"
+}

@@ -1,0 +1,312 @@
+{
+  "tickets": [
+    {
+      "id": 1,
+      "message": "The app crashed during the update and now all of my mother's medication reminders are gone. She missed her evening insulin dose because of this. Fix this immediately.",
+      "triage": {
+        "reasoning": "The app crashing during an update led to missed medication reminders, posing a risk to the patient's health (Critical rule 1).",
+        "uncertainty": "Unclear if the crash caused the loss of reminders or if there are other factors involved.",
+        "urgency": "Critical",
+        "category": "Technical",
+        "sentiment": "Angry",
+        "confidence": "Medium",
+        "suggested_reply": "I'm sorry to hear the app crashed and that your mother missed her insulin dose. I'm marking this as urgent for our team to review. Please ensure she consults her doctor regarding the missed dose.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 2,
+      "message": "I have been charged twice for my Premium subscription this month. I want the duplicate charge refunded right away.",
+      "triage": {
+        "reasoning": "Being charged twice for a subscription indicates money taken wrongly (High rule).",
+        "uncertainty": "The exact nature of the charges and the customer's claim cannot be verified from the message.",
+        "urgency": "High",
+        "category": "Billing",
+        "sentiment": "Frustrated",
+        "confidence": "Medium",
+        "suggested_reply": "I'm sorry to hear you've been charged twice for your Premium subscription. A billing agent will review the charges you've mentioned. If you could provide the dates of the charges, that would be helpful.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 3,
+      "message": "How do I add a second caregiver to my father's profile? I want my sister to also get his alerts.",
+      "triage": {
+        "reasoning": "The customer is asking how to add a second caregiver to a profile, which is a capability question (Low rule).",
+        "uncertainty": "The specific steps to add a caregiver are not provided in the message.",
+        "urgency": "Low",
+        "category": "How-To",
+        "sentiment": "Neutral",
+        "confidence": "High",
+        "suggested_reply": "Thanks for reaching out! I can't confirm the steps to add a second caregiver, but an agent will be able to assist you with that.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 4,
+      "message": "Just wanted to say the new medication tracking feature is fantastic. It has made caring for my grandmother so much easier. Thank you!",
+      "triage": {
+        "reasoning": "The customer is praising a new feature, which falls under feedback (Low rule).",
+        "uncertainty": "None",
+        "urgency": "Low",
+        "category": "Feedback",
+        "sentiment": "Happy",
+        "confidence": "High",
+        "suggested_reply": "Thank you for your kind words! We're thrilled to hear that the new medication tracking feature is making it easier for you to care for your grandmother.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 5,
+      "message": "Emergency fall alerts are NOT reaching my phone. My dad fell yesterday and I received no notification at all. This is unacceptable for a health app.",
+      "triage": {
+        "reasoning": "Emergency alerts not reaching the phone and a fall occurred, posing a possible risk to a patient's safety (Critical rule 1).",
+        "uncertainty": "Unclear whether the issue is with the app or the phone settings.",
+        "urgency": "Critical",
+        "category": "Technical",
+        "sentiment": "Angry",
+        "confidence": "Medium",
+        "suggested_reply": "I'm sorry to hear that emergency fall alerts are not reaching your phone and that your dad fell without notification. I'm marking this as urgent for our team to review.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 6,
+      "message": "I cannot log in. It keeps saying \"invalid credentials\" even after I reset my password twice. Please help.",
+      "triage": {
+        "reasoning": "The user is locked out of their account due to repeated login failures, which is a high urgency issue (High rule).",
+        "uncertainty": "Unclear if the issue is due to the password reset process or another factor.",
+        "urgency": "High",
+        "category": "Account",
+        "sentiment": "Frustrated",
+        "confidence": "Medium",
+        "suggested_reply": "I'm sorry you're having trouble logging in despite resetting your password. A member of our team can assist you with this issue. If you can provide any error messages, that would help.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 7,
+      "message": "Can I switch from monthly to annual billing? Is there a discount if I pay yearly?",
+      "triage": {
+        "reasoning": "The customer is inquiring about billing options and potential discounts, which does not indicate a problem (Low rule).",
+        "uncertainty": "I cannot verify the specifics of billing options or discounts.",
+        "urgency": "Low",
+        "category": "Billing",
+        "sentiment": "Neutral",
+        "confidence": "High",
+        "suggested_reply": "Thanks for your question about switching billing options. I can't confirm the details regarding annual billing or discounts, so an agent will provide the information you need.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 8,
+      "message": "How do I change the app language to Nepali? My mother is not comfortable reading English.",
+      "triage": {
+        "reasoning": "The customer is asking how to change the app language, which is a capability question with no reported problem (Low rule).",
+        "uncertainty": "I cannot verify if Nepali is an available language option in the app.",
+        "urgency": "Low",
+        "category": "How-To",
+        "sentiment": "Neutral",
+        "confidence": "High",
+        "suggested_reply": "Thanks for reaching out. I can't confirm how to change the app language to Nepali, but an agent can provide the exact steps for you.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 9,
+      "message": "The pill scanner stopped recognising my father's medications after the latest update. It worked fine last week.",
+      "triage": {
+        "reasoning": "The pill scanner not recognizing medications after an update indicates a possible bug (Medium rule).",
+        "uncertainty": "Unclear if the issue is due to the update or another factor.",
+        "urgency": "Medium",
+        "category": "Technical",
+        "sentiment": "Frustrated",
+        "confidence": "Medium",
+        "suggested_reply": "I'm sorry to hear that the pill scanner stopped recognizing your father's medications after the update. Our team will review this issue to find a solution.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 10,
+      "message": "It would be great if the app could sync with my Apple Watch so I get reminders on my wrist.",
+      "triage": {
+        "reasoning": "The customer is requesting a new feature for the app (Low rule).",
+        "uncertainty": "None",
+        "urgency": "Low",
+        "category": "Feature Request",
+        "sentiment": "Neutral",
+        "confidence": "High",
+        "suggested_reply": "Thank you for your suggestion! I can't confirm if syncing with Apple Watch is currently available, but an agent will review your request for future updates.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 11,
+      "message": "Someone has accessed my account and changed my mother's health records without permission. I need this account locked down immediately.",
+      "triage": {
+        "reasoning": "Unauthorized access to an account and changes to health records pose a critical risk to patient safety (Critical rule 1).",
+        "uncertainty": "Unclear how the access occurred or what specific changes were made to the health records.",
+        "urgency": "Critical",
+        "category": "Account",
+        "sentiment": "Angry",
+        "confidence": "Medium",
+        "suggested_reply": "I'm sorry to hear about the unauthorized access to your account and the changes made to your mother's health records. I'm marking this as urgent for our security team to review and take necessary actions.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 12,
+      "message": "The support agent who helped me last week was excellent and very patient. Really appreciate the great service.",
+      "triage": {
+        "reasoning": "The customer is praising the support they received, indicating satisfaction with the service (Low rule).",
+        "uncertainty": "None",
+        "urgency": "Low",
+        "category": "Feedback",
+        "sentiment": "Happy",
+        "confidence": "High",
+        "suggested_reply": "Thank you for your kind words! We're glad to hear that you had a positive experience with our support team.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 13,
+      "message": "The dashboard is very slow to load. It takes almost 30 seconds every single time I open the app.",
+      "triage": {
+        "reasoning": "The dashboard loading slowly indicates a performance issue, but it does not block care (Medium rule).",
+        "uncertainty": "Unclear if the slowness is due to the app, device, or network conditions.",
+        "urgency": "Medium",
+        "category": "Technical",
+        "sentiment": "Frustrated",
+        "confidence": "Medium",
+        "suggested_reply": "I'm sorry to hear that the dashboard is slow to load. Our team will review this performance issue. If you could share your device type, that would help us investigate further.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 14,
+      "message": "I cancelled my subscription last month but you are STILL charging my card. This feels like fraud and I want it stopped now.",
+      "triage": {
+        "reasoning": "The customer reports ongoing charges after cancellation, indicating possible unauthorized billing (High rule).",
+        "uncertainty": "Cannot verify the cancellation status or the charges from the message alone.",
+        "urgency": "High",
+        "category": "Billing",
+        "sentiment": "Frustrated",
+        "confidence": "Medium",
+        "suggested_reply": "I'm sorry to hear you're still being charged after your cancellation. A billing agent will review the situation and help ensure this is addressed. If you can provide the charge dates, that would be helpful.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 15,
+      "message": "Where can I download my father's health report as a PDF to share with his doctor?",
+      "triage": {
+        "reasoning": "The customer is asking where to download a health report, which is a question about app functionality (Low rule).",
+        "uncertainty": "Unclear if the report is available in PDF format or how to access it.",
+        "urgency": "Low",
+        "category": "How-To",
+        "sentiment": "Neutral",
+        "confidence": "High",
+        "suggested_reply": "Thanks for reaching out. I can't confirm where to download your father's health report as a PDF, but an agent can provide the exact steps to help you share it with his doctor.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 16,
+      "message": "The reminder notifications arrive about 10 minutes late every time. Can this timing be fixed?",
+      "triage": {
+        "reasoning": "The customer reports a consistent delay in reminder notifications, which indicates a possible bug (Medium rule).",
+        "uncertainty": "Unclear if the issue is due to the app or the device settings.",
+        "urgency": "Medium",
+        "category": "Technical",
+        "sentiment": "Frustrated",
+        "confidence": "Medium",
+        "suggested_reply": "I'm sorry to hear that your reminder notifications are arriving late. Our team can investigate this timing issue further. If you could share your device type, that would help.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 17,
+      "message": "The video call with the doctor kept dropping and we could not finish the consultation. Very frustrating.",
+      "triage": {
+        "reasoning": "The video call dropping indicates a possible technical issue that disrupted the consultation (Medium rule).",
+        "uncertainty": "Unclear whether the issue was due to the app, internet connection, or other factors.",
+        "urgency": "Medium",
+        "category": "Technical",
+        "sentiment": "Frustrated",
+        "confidence": "Medium",
+        "suggested_reply": "I'm sorry to hear that the video call with the doctor kept dropping and that it was frustrating. Our team can investigate this issue further. If you can provide details about the device and connection used, that would help.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 18,
+      "message": "I love the new interface redesign. It is much easier for my grandmother to navigate on her own now.",
+      "triage": {
+        "reasoning": "The customer expresses positive feedback about the interface redesign, indicating satisfaction (Low rule).",
+        "uncertainty": "None",
+        "urgency": "Low",
+        "category": "Feedback",
+        "sentiment": "Happy",
+        "confidence": "High",
+        "suggested_reply": "Thank you for your kind words! We're thrilled to hear that the new interface is making it easier for your grandmother to navigate on her own.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 19,
+      "message": "Do you offer a family plan that covers multiple patients under one account?",
+      "triage": {
+        "reasoning": "The customer is inquiring about a potential feature regarding family plans, which does not indicate a problem (Low rule).",
+        "uncertainty": "I cannot verify if a family plan exists or its details.",
+        "urgency": "Low",
+        "category": "How-To",
+        "sentiment": "Neutral",
+        "confidence": "High",
+        "suggested_reply": "Thanks for your question! I can't confirm if a family plan is available, but an agent can provide the details you need.\n\nCaregene Support"
+      },
+      "error": null
+    },
+    {
+      "id": 20,
+      "message": "All of my mother's health data has disappeared from the app. Months of blood pressure and glucose logs, gone. Please help urgently, we need that history for her appointment tomorrow.",
+      "triage": {
+        "reasoning": "The disappearance of health data is a possible risk to a patient's health as it is needed for an imminent appointment (Critical rule 1).",
+        "uncertainty": "Unclear what caused the data loss or if it can be recovered in time for the appointment.",
+        "urgency": "Critical",
+        "category": "Technical",
+        "sentiment": "Anxious",
+        "confidence": "Medium",
+        "suggested_reply": "I'm sorry to hear that your mother's health data has disappeared. I'm marking this as urgent for our team to review, as we understand the importance of that history for her appointment tomorrow.\n\nCaregene Support"
+      },
+      "error": null
+    }
+  ],
+  "stats": {
+    "total": 20,
+    "failed": 0,
+    "urgency": {
+      "Critical": 4,
+      "High": 3,
+      "Low": 9,
+      "Medium": 4
+    },
+    "category": {
+      "Technical": 7,
+      "Billing": 3,
+      "How-To": 4,
+      "Feedback": 3,
+      "Account": 2,
+      "Feature Request": 1
+    },
+    "sentiment": {
+      "Angry": 3,
+      "Frustrated": 7,
+      "Neutral": 6,
+      "Happy": 3,
+      "Anxious": 1
+    },
+    "low_confidence": 0
+  },
+  "version": "v4",
+  "model": "gpt-4o-mini"
+}
