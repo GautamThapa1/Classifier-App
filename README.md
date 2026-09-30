@@ -2,8 +2,8 @@
 
 A web app that triages a batch of customer support tickets with AI and shows them in a dashboard for a support agent. Built for the Caregene Applied AI Engineer (Intern) take-home.
 
-- **Live app:** <!-- paste Render URL -->
-- **Repository:** <!-- paste GitHub URL -->
+- **Live app:** https://classifier-app-3mdx.onrender.com/
+- **Repository:** https://github.com/GautamThapa1/Classifier-App
 - **Video walkthrough:** <!-- paste Loom URL -->
 
 ## What it does
@@ -11,7 +11,7 @@ A web app that triages a batch of customer support tickets with AI and shows the
 - Triages the 20 sample tickets (or an uploaded JSON file) with an LLM
 - Per ticket: urgency, category, sentiment, confidence, a short reasoning note, what cannot be verified from the message, and a draft reply
 - Dashboard: KPI cards, charts for urgency / category / sentiment, search, filters, sorting, pagination (15 per page), colour-coded badges, and a detail panel with the full message and an editable, copyable reply
-- Progress bar while triaging, an empty state, and clear errors for empty or malformed input
+- Empty state, clear input errors, and per-ticket failure rows so one failed request does not discard the batch
 - Every run is saved as `runs/vN.json`, and the prompt it used is saved as `history/vN_prompt.txt`
 
 ## Quick start
@@ -23,8 +23,8 @@ You need [uv](https://docs.astral.sh/uv/) and an OpenAI API key.
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # 2. Clone and install
-git clone <repo-url>
-cd caregene-task
+git clone https://github.com/GautamThapa1/Classifier-App.git
+cd Classifier-App
 uv sync                    # creates .venv, installs pinned dependencies and the Python version
 
 # 3. Add your key
@@ -46,7 +46,7 @@ OPENAI_MODEL=gpt-4o-mini
 ### Using the app
 
 1. Click **Run sample batch** to triage `data/support_tickets.json`, or **Upload JSON** to use your own file.
-2. Watch the progress bar. The result is saved as the next `runs/vN.json`.
+2. Wait for triage to finish. The result is saved as the next `runs/vN.json`.
 3. Filter, sort and search the table, and click a row to read the ticket and its suggested reply.
 
 Upload format: a JSON list of objects with an `id` and a `message` (`text`, `customer_message` and `body` also work), or `{"tickets": [...]}`. An empty list, a ticket with no message, or a file that is not JSON shows an error instead of running. Limits: 50 tickets, 2,000 characters per message.
@@ -54,11 +54,11 @@ Upload format: a JSON list of objects with an `id` and a `message` (`text`, `cus
 ### Other commands
 
 ```bash
-make con     # run the same batch 3 times and compare labels (60 API calls)
+make con     # run 20 tickets 3 times; 60 initial model requests, plus any retries
 ```
 
 ```bash
-uv run python -m scripts.consistency     # run the same batch 3 times and compare labels (60 API calls)
+uv run python -m scripts.consistency     # equivalent command
 ```
 
 <details>
@@ -88,7 +88,7 @@ uv add fastapi "uvicorn[standard]" openai jinja2 python-dotenv pydantic
 ```
 app/
   main.py      routes, input validation, stats, run versioning
-  llm.py       OpenAI call, retries, progress counter
+  llm.py       OpenAI calls, per-ticket retries
   models.py    Pydantic schema, reply validator, review flag
   prompts.py   system prompt
   templates/   index.html
@@ -104,9 +104,8 @@ scripts/       consistency.py
 | `GET /` | The dashboard |
 | `GET /api/results` | The latest saved run |
 | `POST /api/triage` | Triage the sample file (empty body) or uploaded tickets; saves `runs/vN.json` and `history/vN_prompt.txt` |
-| `GET /api/progress` | Tickets done and total, polled by the progress bar |
 
-**Error handling.** Each ticket is retried up to 3 times. Rate limits back off, and an exhausted OpenAI quota fails fast with a clear message. A ticket that still fails is shown as "Triage failed" with the reason, and the rest of the batch is unaffected. A refusal from the model is treated as a failure too.
+**Error handling.** Each ticket gets up to 3 attempts. Rate limits back off, and an exhausted OpenAI quota fails fast. A ticket that still fails is shown as "Triage failed" with the reason, while the rest of the batch continues. Model refusals are treated as ticket failures. If a reply breaks the banned-wording rules, the reason is sent back to the model and the ticket is retried; after 3 attempts it becomes a failure row.
 
 ## Prompt engineering
 
@@ -266,14 +265,14 @@ Earlier versions are in `history/v1_prompt.txt` to `history/v5_prompt.txt`.
 - Few-shot examples
 - An `uncertainty` field generated before `confidence`, and before the labels
 - Fixed reply wording, a banned-word list, and a rule that the message is data, not instructions
-- Two rules enforced in code, not only in the prompt: a validator rejects banned reply wording and retries with the reason fed back to the model, and `needs_human_review` is computed from urgency, confidence and category instead of being asked from the model
+- Two rules enforced in code, not only in the prompt: a validator rejects banned reply wording and the reason is fed back to the model on retry (up to 3 attempts, then a failure row), and `needs_human_review` is computed from urgency, confidence and category instead of being asked from the model
 
 ### How the prompt was refined
 
 | Version | What changed | Result |
 |---|---|---|
 | v1 | Baseline: role, urgency rubric, short category and confidence rules, reply rules (including a general "never invent facts") | Urgency correct. Facts still invented (#8, #19), menu names invented (#3, #15), confidence High on 20/20, #19 tagged Feature Request, doctor line on #11 |
-| v2 | "You know NOTHING about Caregene... never confirm or deny", plans and pricing = Billing, High/Medium/Low confidence definitions, don't repeat unverified claims, doctor line restricted, 80-word cap, sign-off format | Invented facts gone, #19 fixed, #11 doctor line gone. Confidence High on 17/20, sign-off missing on 4 replies, doctor line dropped from #1 and #5 |
+| v2 | "You know NOTHING about Caregene... never confirm or deny", plans and pricing = Billing, High/Medium/Low confidence definitions, don't repeat unverified claims, doctor line restricted, 80-word cap, sign-off format | Invented facts gone; #19 moved to Billing under the plans/pricing rule (correctness is unverified). #11 doctor line gone. Confidence High on 17/20, sign-off missing on 4 replies, doctor line dropped from #1 and #5 |
 | v3 | `uncertainty` field before the labels, "work in this order" line, 3 few-shot examples | Confidence High on 9/20 (Medium on 11), sign-off on all 20. Doctor line came back on #11 and odd doctor advice appeared on #20 |
 | v4 | Required wording "I'm marking this as urgent for our team", banned phrases ("escalated", "immediately"), doctor line only for a missed dose or failed alert, no generic closers, examples edited to match the rules | "Escalated" and "immediately" gone, #11 and #20 doctor lines gone, filler closers gone. #5 lost its doctor line |
 | v5 | Examples added inline under the rubric, category and confidence sections (several were near-copies of sample tickets) | Contaminated: #17 became High, matching its example. Replies got worse: advice such as "Please ensure..." on #1, #5 and #20, "Please consider changing your password" on #11, "Please hold on" on #3. Reasoning slipped into second person on #5 |
@@ -307,7 +306,7 @@ The v4 prompt also scored 20/20. Repeatable is not the same as correct: there is
 
 1. Push the repo to GitHub. Commit `runs/` and `history/`, and keep `.env` out of git.
 2. On Render, create a Web Service from the repo.
-3. Build command: `pip install uv && uv sync --frozen`
+3. Build command: `pip install uv && uv sync --frozen --no-dev`
 4. Start command: `uv run uvicorn app.main:app --host 0.0.0.0 --port $PORT`
 5. Add the environment variable `OPENAI_API_KEY` (and optionally `OPENAI_MODEL`).
 
@@ -321,7 +320,7 @@ My first runs used Groq (`openai/gpt-oss-20b`) and some tickets failed with `429
 
 - **Tuned on the 20 sample tickets, with no ground truth.** I judged the labels by reading the outputs, and v5's examples were near-copies of sample tickets (v6's video-visit example is still close to #17). Accuracy on new tickets is untested.
 - **Two known misses in v6.** #20 (data loss) still gets the emergency-services sentence, which the prompt allows only for a missed dose or a failed alert, and #5 ("unacceptable", capital letters) is labelled Frustrated where the prompt's own rule says Angry. The validator only checks a list of banned phrases, so it cannot catch either.
-- **Replies are drafts and confidence is self-reported.** The model knows nothing about Caregene, so a human must review every reply before it is sent. Confidence is High on 17/20 and never Low on this batch, and the dashboard does not show `needs_human_review` yet (it is in `runs/vN.json`).
+- **Replies are drafts and confidence is self-reported.** The model knows nothing about Caregene, so a human must review every reply before it is sent. Confidence is High on 17/20 and never Low on this batch. Code flags 7/20 for human review, but the dashboard does not surface `needs_human_review` yet (it is in `runs/vN.json`).
 
 ## What I would do next
 
