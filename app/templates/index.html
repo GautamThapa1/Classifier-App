@@ -62,12 +62,13 @@
           <select id="fUrg" class="sel"><option value="">All urgency</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
           <select id="fCat" class="sel"><option value="">All categories</option></select>
           <select id="fSen" class="sel"><option value="">All sentiment</option><option>Angry</option><option>Frustrated</option><option>Anxious</option><option>Neutral</option><option>Happy</option></select>
+          <select id="fConf" class="sel"><option value="">All confidence</option><option value="review">Needs review</option><option>Low</option><option>Medium</option><option>High</option></select>
           <select id="fSort" class="sel"><option value="urgency">Sort: urgency</option><option value="id">Sort: ID</option></select>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-sm">
             <thead class="text-left text-slate-500 bg-slate-50">
-              <tr><th class="p-3">ID</th><th class="p-3">Message</th><th class="p-3">Urgency</th><th class="p-3">Category</th><th class="p-3">Sentiment</th></tr>
+              <tr><th class="p-3">ID</th><th class="p-3">Message</th><th class="p-3">Urgency</th><th class="p-3">Category</th><th class="p-3">Sentiment</th><th class="p-3">Confidence</th></tr>
             </thead>
             <tbody id="rows"></tbody>
           </table>

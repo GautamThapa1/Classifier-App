@@ -7,6 +7,7 @@ const BADGE = {
   Anxious: "bg-purple-100 text-purple-700", Neutral: "bg-slate-100 text-slate-700",
   Happy: "bg-green-100 text-green-700",
 };
+const CONF = { Low: "text-red-700 font-medium", Medium: "text-amber-700", High: "text-slate-500" };
 const HEX = {
   Critical: "#dc2626", High: "#f97316", Medium: "#eab308", Low: "#22c55e",
   Angry: "#dc2626", Frustrated: "#f97316", Anxious: "#a855f7", Neutral: "#94a3b8", Happy: "#22c55e",
@@ -45,11 +46,12 @@ function render() {
   const u = s.urgency, se = s.sentiment;
   const urgent = (u.Critical || 0) + (u.High || 0);
   const upset = (se.Angry || 0) + (se.Frustrated || 0) + (se.Anxious || 0);
+  const lessSure = data.tickets.filter(t => t.triage && t.triage.confidence !== "High").length;
   $("kpis").innerHTML =
     kpi("Total tickets", s.total, s.failed ? `${s.failed} failed` : "all triaged") +
     kpi("Critical", u.Critical || 0, "needs immediate action") +
     kpi("Critical + High", `${Math.round(100 * urgent / s.total)}%`, `${urgent} tickets`) +
-    kpi("Negative sentiment", `${Math.round(100 * upset / s.total)}%`, `${s.low_confidence} low-confidence → review`);
+    kpi("Negative sentiment", `${Math.round(100 * upset / s.total)}%`, `${lessSure} below high confidence`);
 
   chart("cUrg", "doughnut", u);
   chart("cCat", "bar", s.category);
@@ -62,10 +64,10 @@ function render() {
 }
 
 function renderRows() {
-  const f = { u: $("fUrg").value, c: $("fCat").value, s: $("fSen").value, q: $("fQ").value.toLowerCase(), sort: $("fSort").value };
+  const f = { u: $("fUrg").value, c: $("fCat").value, s: $("fSen").value, k: $("fConf").value, q: $("fQ").value.toLowerCase(), sort: $("fSort").value };
   let r = data.tickets.filter(t => {
     const x = t.triage || {};
-    return (!f.u || x.urgency === f.u) && (!f.c || x.category === f.c) && (!f.s || x.sentiment === f.s) && t.message.toLowerCase().includes(f.q);
+    return (!f.u || x.urgency === f.u) && (!f.c || x.category === f.c) && (!f.s || x.sentiment === f.s) && (!f.k || (f.k === "review" ? x.needs_human_review : x.confidence === f.k)) && t.message.toLowerCase().includes(f.q);
   });
   r.sort((a, b) => f.sort === "id"
     ? String(a.id).localeCompare(String(b.id), undefined, { numeric: true })
@@ -83,7 +85,8 @@ function renderRows() {
       <td class="p-3 max-w-md truncate">${esc(t.message)}</td>
       <td class="p-3">${x ? badge(x.urgency) : badge("Failed")}</td>
       <td class="p-3">${x ? esc(x.category) : "—"}</td>
-      <td class="p-3">${x ? badge(x.sentiment) : "—"}</td></tr>`;
+      <td class="p-3">${x ? badge(x.sentiment) : "—"}</td>
+      <td class="p-3 whitespace-nowrap">${x ? `<span class="${CONF[x.confidence]}">${esc(x.confidence)}</span>${x.needs_human_review ? ' <span class="ml-1 px-2 py-0.5 rounded-full text-xs bg-indigo-50 text-indigo-700">Review</span>' : ""}` : "—"}</td></tr>`;
   }).join("");
   renderPager(r.length, start, shown.length);
 }
@@ -159,7 +162,7 @@ $("fileIn").onchange = async e => {
   try { run(JSON.parse(await f.text())); } catch { show("That file isn't valid JSON."); }
   e.target.value = "";
 };
-["fQ", "fUrg", "fCat", "fSen", "fSort"].forEach(id => $(id).addEventListener("input", () => { page = 1; renderRows(); }));
+["fQ", "fUrg", "fCat", "fSen", "fConf", "fSort"].forEach(id => $(id).addEventListener("input", () => { page = 1; renderRows(); }));
 $("rows").onclick = e => { const tr = e.target.closest("tr"); if (tr) openDetail(tr.dataset.id); };
 $("overlay").onclick = closeDetail;
 
