@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from openai import OpenAI, RateLimitError
 from .models import Triage, Ticket
 from .prompts import SYSTEM_PROMPT, user_prompt
+from pydantic import ValidationError
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"), timeout=30)
@@ -11,6 +12,10 @@ MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 progress = {"done": 0, "total": 0}
 
 def triage_one(message: str, retries: int = 2):
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": user_prompt(message)},
+    ]
     last = None
     for attempt in range(retries + 1):
         try:
@@ -18,15 +23,18 @@ def triage_one(message: str, retries: int = 2):
                 model=MODEL,
                 temperature=0,
                 response_format=Triage,
-                messages=[
-                    {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": user_prompt(message)},
-                ],
+                messages=messages,
             )
             msg = r.choices[0].message
             if msg.refusal:
                 return None, f"Model refused: {msg.refusal[:150]}"
             return msg.parsed, None
+        except ValidationError as e:
+            # A reply broke a rule: tell the model exactly what and retry.
+            reason = e.errors()[0]["msg"]
+            last = f"Reply rejected: {reason[:150]}"
+            messages.append({"role": "user", "content":
+                f"Your previous reply was rejected: {reason} Rewrite the reply following the reply rules and return the JSON again."})
         except RateLimitError as e:
             if "insufficient_quota" in str(e):
                 return None, "OpenAI quota exhausted. Check billing/credits."
