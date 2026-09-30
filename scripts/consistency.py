@@ -6,6 +6,7 @@ RUNS = 3
 tickets = normalize(json.load(open("data/support_tickets.json")))
 runs = [triage_batch(tickets) for _ in range(RUNS)]
 
+# checks if the field are consistent across runs
 def values(i, field):
     return [r[i]["triage"][field] if r[i]["triage"] else None for r in runs]
 
