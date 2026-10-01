@@ -34,16 +34,18 @@ const badge = v => `<span class="px-2 py-0.5 rounded-full text-xs font-medium ${
 const show = t => { $("msg").textContent = t; $("msg").classList.toggle("hidden", !t); };
 
 function chart(id, type, counts) {
+  const isDark = document.documentElement.dataset.theme === "dark";
   const [r, g, b] = getComputedStyle($(id)).color.match(/[\d.]+/g);
-  const text = `rgb(${r}, ${g}, ${b})`;
-  const grid = `rgba(${r}, ${g}, ${b}, 0.15)`;
+  const text = isDark ? "rgb(226, 232, 240)" : `rgb(${r}, ${g}, ${b})`;
+  const grid = isDark ? "rgba(226, 232, 240, 0.35)" : `rgba(${r}, ${g}, ${b}, 0.15)`;
   const labels = Object.keys(counts);
   const values = Object.values(counts);
   const backgroundColor = labels.map(l => HEX[l] || "#6366f1");
+  const borderColor = isDark && type === "doughnut" ? backgroundColor : undefined;
   if (charts[id]) {
     const instance = charts[id];
     instance.data.labels = labels;
-    Object.assign(instance.data.datasets[0], { data: values, backgroundColor, borderWidth: 0 });
+    Object.assign(instance.data.datasets[0], { data: values, backgroundColor, borderColor, borderWidth: 0 });
     instance.options.plugins.legend.labels.color = text;
     if (type === "bar") {
       instance.options.scales.x.ticks.color = text;
@@ -56,7 +58,7 @@ function chart(id, type, counts) {
   }
   charts[id] = new Chart($(id), {
     type,
-    data: { labels, datasets: [{ data: values, backgroundColor, borderWidth: 0 }] },
+    data: { labels, datasets: [{ data: values, backgroundColor, borderColor, borderWidth: 0 }] },
     options: {
       maintainAspectRatio: false,
       plugins: { legend: { display: type !== "bar", position: "bottom", labels: { color: text } } },
@@ -90,13 +92,13 @@ function render() {
   const u = s.urgency, se = s.sentiment;
   const urgent = (u.Critical || 0) + (u.High || 0);
   const upset = (se.Angry || 0) + (se.Frustrated || 0) + (se.Anxious || 0);
-  const lowConfidence = s.low_confidence || 0;
+  const belowHighConfidence = data.tickets.filter(t => t.triage && ["Medium", "Low"].includes(t.triage.confidence)).length;
   $("kpis").innerHTML =
     kpi("Total tickets", s.total, s.failed ? `${s.failed} failed` : "all triaged") +
     kpi("Critical", u.Critical || 0, "needs immediate action") +
     kpi("Critical + High", `${Math.round(100 * urgent / s.total)}%`, `${urgent} tickets`) +
     kpi("Negative sentiment", `${Math.round(100 * upset / s.total)}%`, "angry, frustrated, or anxious") +
-    kpi("Low confidence", lowConfidence, lowConfidence ? "a review may be helpful" : "no low-confidence tickets");
+    kpi("Below high confidence", belowHighConfidence, "model less sure of its labels");
 
   chart("cUrg", "doughnut", u);
   chart("cCat", "bar", s.category);
