@@ -139,7 +139,7 @@
     </div>
 
     <div id="dash" class="hidden space-y-6">
-      <section id="kpis" class="grid grid-cols-2 md:grid-cols-4 gap-3"></section>
+      <section id="kpis" class="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5"></section>
 
       <section class="grid min-w-0 grid-cols-1 gap-3 md:grid-cols-3">
         <div class="min-w-0 overflow-hidden rounded-xl border bg-white p-4"><h3 class="mb-2 text-sm font-medium">Urgency</h3><div class="chart-frame"><canvas id="cUrg"></canvas></div></div>
@@ -153,6 +153,7 @@
           <select id="fUrg" class="sel w-full min-w-0 md:w-auto"><option value="">All urgency</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
           <select id="fCat" class="sel w-full min-w-0 md:w-auto"><option value="">All categories</option></select>
           <select id="fSen" class="sel w-full min-w-0 md:w-auto"><option value="">All sentiment</option><option>Angry</option><option>Frustrated</option><option>Anxious</option><option>Neutral</option><option>Happy</option></select>
+          <select id="fConfidence" class="sel w-full min-w-0 md:w-auto"><option value="">All confidence</option><option>High</option><option>Medium</option><option>Low</option></select>
           <select id="fSort" class="sel w-full min-w-0 md:w-auto"><option value="urgency">Sort: urgency</option><option value="id">Sort: ID</option></select>
         </div>
         <div class="overflow-x-auto">

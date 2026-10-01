@@ -90,11 +90,13 @@ function render() {
   const u = s.urgency, se = s.sentiment;
   const urgent = (u.Critical || 0) + (u.High || 0);
   const upset = (se.Angry || 0) + (se.Frustrated || 0) + (se.Anxious || 0);
+  const lowConfidence = s.low_confidence || 0;
   $("kpis").innerHTML =
     kpi("Total tickets", s.total, s.failed ? `${s.failed} failed` : "all triaged") +
     kpi("Critical", u.Critical || 0, "needs immediate action") +
     kpi("Critical + High", `${Math.round(100 * urgent / s.total)}%`, `${urgent} tickets`) +
-    kpi("Negative sentiment", `${Math.round(100 * upset / s.total)}%`);
+    kpi("Negative sentiment", `${Math.round(100 * upset / s.total)}%`, "angry, frustrated, or anxious") +
+    kpi("Low confidence", lowConfidence, lowConfidence ? "a review may be helpful" : "no low-confidence tickets");
 
   chart("cUrg", "doughnut", u);
   chart("cCat", "bar", s.category);
@@ -107,10 +109,10 @@ function render() {
 }
 
 function renderRows() {
-  const f = { u: $("fUrg").value, c: $("fCat").value, s: $("fSen").value, q: $("fQ").value.toLowerCase(), sort: $("fSort").value };
+  const f = { u: $("fUrg").value, c: $("fCat").value, s: $("fSen").value, confidence: $("fConfidence").value, q: $("fQ").value.toLowerCase(), sort: $("fSort").value };
   let r = data.tickets.filter(t => {
     const x = t.triage || {};
-    return (!f.u || x.urgency === f.u) && (!f.c || x.category === f.c) && (!f.s || x.sentiment === f.s) && t.message.toLowerCase().includes(f.q);
+    return (!f.u || x.urgency === f.u) && (!f.c || x.category === f.c) && (!f.s || x.sentiment === f.s) && (!f.confidence || x.confidence === f.confidence) && t.message.toLowerCase().includes(f.q);
   });
   r.sort((a, b) => f.sort === "id"
     ? String(a.id).localeCompare(String(b.id), undefined, { numeric: true })
@@ -204,7 +206,7 @@ $("fileIn").onchange = async e => {
   try { run(JSON.parse(await f.text())); } catch { show("That file isn't valid JSON."); }
   e.target.value = "";
 };
-["fQ", "fUrg", "fCat", "fSen", "fSort"].forEach(id => $(id).addEventListener("input", () => { page = 1; renderRows(); }));
+["fQ", "fUrg", "fCat", "fSen", "fConfidence", "fSort"].forEach(id => $(id).addEventListener("input", () => { page = 1; renderRows(); }));
 $("rows").onclick = e => { const tr = e.target.closest("tr"); if (tr) openDetail(tr.dataset.id); };
 $("overlay").onclick = closeDetail;
 
