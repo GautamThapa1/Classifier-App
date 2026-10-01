@@ -129,7 +129,7 @@ function openDetail(id) {
         <span class="px-2 py-0.5 rounded-full text-xs bg-slate-100">${esc(x.category)}</span></div>
       <p class="text-xs text-slate-500 mb-1">Why: ${esc(x.reasoning)}</p>
       <p class="text-xs text-slate-500 mb-1">Unverified: ${esc(x.uncertainty || "—")}</p>
-      <p class="text-xs text-slate-500 mb-4">AI confidence: <b>${esc(x.confidence)}</b>${x.confidence === "Low" ? " — please review" : ""}</p>
+      <p class="text-xs text-slate-500 mb-4">Confidence in category and urgency: <b>${esc(x.confidence)}</b>${x.confidence === "Low" ? " — please review" : ""}</p>
       <h3 class="text-sm font-medium mb-1">Suggested reply</h3>
       <textarea id="reply" rows="9" class="w-full border rounded-lg p-3 text-sm">${esc(x.suggested_reply)}</textarea>
       <button id="copy" class="mt-2 px-3 py-2 text-sm rounded-lg bg-indigo-600 text-white">Copy reply</button>`
