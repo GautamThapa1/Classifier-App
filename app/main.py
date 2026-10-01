@@ -19,6 +19,7 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory=BASE / "static"), name="static")
 templates = Jinja2Templates(directory=BASE / "templates")
 
+# gets called by @app.post("/api/triage")
 def normalize(raw) -> list[dict]:
     items = raw.get("tickets") if isinstance(raw, dict) else raw
     if not isinstance(items, list) or not items:
@@ -33,6 +34,7 @@ def normalize(raw) -> list[dict]:
         out.append({"id": t.get("id", i), "message": msg[:2000]})
     return out
 
+# gets called by @app.post("/api/triage")
 def build_stats(tickets: list[dict]) -> dict:
     done = [t for t in tickets if t["triage"]]
     count = lambda k: dict(Counter(t["triage"][k] for t in done))
@@ -46,12 +48,13 @@ def build_stats(tickets: list[dict]) -> dict:
     }
 
 def run_files():
-    return sorted(RUNS.glob("v*.json"), key=lambda p: int(p.stem[1:]))
+    return sorted(RUNS.glob("v*.json"), key=lambda p: int(p.stem[1:])) # stem removes the suffix 
 
+# gets called by @app.post("/api/triage")
 def save_run(result: dict) -> dict:
     RUNS.mkdir(exist_ok=True)
     HIST.mkdir(exist_ok=True)
-    files = run_files()
+    files = run_files() # go inside the RUNS, and sort them 
     n = int(files[-1].stem[1:]) + 1 if files else 1
     result["version"], result["model"] = f"v{n}", MODEL
     (RUNS / f"v{n}.json").write_text(json.dumps(result, indent=2))
