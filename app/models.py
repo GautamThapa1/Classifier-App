@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel, computed_field, field_validator
 
-# Reply guardrail: phrases the prompt bans but models still slip in.
+# Reply guardrail regular expression: phrases the prompt bans but models still slip in.
 BANNED_REPLY = re.compile(
     r"\bI['’]m marking\b|\bescalat\w*|\bimmediately\b|\bshortly\b|\bright away\b|\bas soon as\b"
     r"|\b(?:I|we)(?:['’]ve|['’]ll| have| will)\b"
@@ -42,7 +42,7 @@ class Triage(BaseModel):
             or (self.urgency == "High" and self.category in ("Billing", "Account"))
         )
 
-# Format before saving, gets used in llm.py
+# Format before saving in runs.json, gets used in llm.py
 class Ticket(BaseModel):
     id: int | str
     message: str

@@ -28,7 +28,7 @@ def normalize(raw) -> list[dict]:
         if not isinstance(t, dict):
             raise HTTPException(400, f"Ticket #{i} is not an object.")
         msg = next((str(t[k]).strip() for k in ("message", "text", "customer_message", "body") if t.get(k)), "")
-        if not msg:
+        if not msg: # if empty raise exception
             raise HTTPException(400, f"Ticket #{i} has no message text.")
         out.append({"id": t.get("id", i), "message": msg[:2000]})
     return out
@@ -39,7 +39,7 @@ def build_stats(tickets: list[dict]) -> dict:
     return {
         "total": len(tickets),
         "failed": len(tickets) - len(done),
-        "urgency": count("urgency"),
+        "urgency": count("urgency"), # being called here
         "category": count("category"),
         "sentiment": count("sentiment"),
         "low_confidence": sum(t["triage"]["confidence"] == "Low" for t in done),
