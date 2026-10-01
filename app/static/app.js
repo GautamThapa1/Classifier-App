@@ -23,7 +23,7 @@ function setTheme(isDark, persist = true) {
   if (persist) localStorage.setItem("caregene-theme", isDark ? "dark" : "light");
   Chart.defaults.color = isDark ? "#cbd5e1" : "#334155";
   Chart.defaults.borderColor = isDark ? "#334155" : "#e2e8f0";
-  Object.values(charts).forEach(instance => instance.update("none"));
+  redrawCharts();
 }
 
 setTheme(document.documentElement.dataset.theme === "dark", false);
@@ -34,13 +34,45 @@ const badge = v => `<span class="px-2 py-0.5 rounded-full text-xs font-medium ${
 const show = t => { $("msg").textContent = t; $("msg").classList.toggle("hidden", !t); };
 
 function chart(id, type, counts) {
-  charts[id]?.destroy();
+  const [r, g, b] = getComputedStyle($(id)).color.match(/[\d.]+/g);
+  const text = `rgb(${r}, ${g}, ${b})`;
+  const grid = `rgba(${r}, ${g}, ${b}, 0.15)`;
   const labels = Object.keys(counts);
+  const values = Object.values(counts);
+  const backgroundColor = labels.map(l => HEX[l] || "#6366f1");
+  if (charts[id]) {
+    const instance = charts[id];
+    instance.data.labels = labels;
+    Object.assign(instance.data.datasets[0], { data: values, backgroundColor, borderWidth: 0 });
+    instance.options.plugins.legend.labels.color = text;
+    if (type === "bar") {
+      instance.options.scales.x.ticks.color = text;
+      instance.options.scales.x.grid.color = grid;
+      instance.options.scales.y.ticks.color = text;
+      instance.options.scales.y.grid.color = grid;
+    }
+    instance.update("none");
+    return;
+  }
   charts[id] = new Chart($(id), {
     type,
-    data: { labels, datasets: [{ data: Object.values(counts), backgroundColor: labels.map(l => HEX[l] || "#6366f1") }] },
-    options: { maintainAspectRatio: false, plugins: { legend: { display: type !== "bar", position: "bottom" } }, scales: type === "bar" ? { y: { ticks: { precision: 0 } } } : {} },
+    data: { labels, datasets: [{ data: values, backgroundColor, borderWidth: 0 }] },
+    options: {
+      maintainAspectRatio: false,
+      plugins: { legend: { display: type !== "bar", position: "bottom", labels: { color: text } } },
+      scales: type === "bar" ? {
+        x: { ticks: { color: text }, grid: { color: grid } },
+        y: { ticks: { color: text, precision: 0 }, grid: { color: grid } },
+      } : {},
+    },
   });
+}
+
+function redrawCharts() {
+  if (!data.stats) return;
+  chart("cUrg", "doughnut", data.stats.urgency);
+  chart("cCat", "bar", data.stats.category);
+  chart("cSen", "doughnut", data.stats.sentiment);
 }
 
 function kpi(label, value, sub = "") {
