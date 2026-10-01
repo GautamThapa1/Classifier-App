@@ -11,6 +11,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"), timeout=30)
 MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 progress = {"done": 0, "total": 0}
 
+# gets called from _run()
 def triage_one(message: str, retries: int = 2):
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
@@ -28,7 +29,7 @@ def triage_one(message: str, retries: int = 2):
             msg = r.choices[0].message
             if msg.refusal:
                 return None, f"Model refused: {msg.refusal[:150]}"
-            return msg.parsed, None
+            return msg.parsed, None # successfull: (Triage(...), None) i.e: Tuple
         except ValidationError as e:
             # A reply broke a rule: tell the model exactly what and retry.
             reason = e.errors()[0]["msg"]
@@ -43,14 +44,16 @@ def triage_one(message: str, retries: int = 2):
         except Exception as e:
             last = str(e)[:200]
             time.sleep(1)
-    return None, last
+    return None, last # fails: (None, "Rate limited")
 
+# gets called from triage_batch()
 def _run(t: dict) -> dict:
     triage, err = triage_one(t["message"])
     progress["done"] += 1
     return Ticket(id=t["id"], message=t["message"], triage=triage, error=err).model_dump()
 
+# gets called from main.py
 def triage_batch(tickets: list[dict]) -> list[dict]:
-    progress.update(done=0, total=len(tickets))
+    progress.update(done=0, total=len(tickets)) # this is dictionary
     with ThreadPoolExecutor(max_workers=4) as ex:
-        return list(ex.map(_run, tickets))
+        return list(ex.map(_run, tickets)) # 4 threads _run() in parallel and map into list

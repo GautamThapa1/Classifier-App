@@ -11,7 +11,7 @@ BANNED_REPLY = re.compile(
     re.I,
 )
 
-
+# Schema for llm, gets used in llm.py
 class Triage(BaseModel):
     reasoning: str           # third person, key facts only, no rubric names
     uncertainty: str         # what can't be verified from the message, or "None"
@@ -21,7 +21,7 @@ class Triage(BaseModel):
     confidence: Literal["High", "Medium", "Low"]
     suggested_reply: str
 
-    @field_validator("suggested_reply")
+    @field_validator("suggested_reply") # guardrail to search in BANNED_REPLY
     @classmethod
     def reply_follows_rules(cls, v: str) -> str:
         m = BANNED_REPLY.search(v)
@@ -32,8 +32,8 @@ class Triage(BaseModel):
             )
         return v
 
-    @computed_field  # derived in code, so it never depends on the model
-    @property
+    @computed_field  # decided by the code not llm, and add it to above list but by the code
+    @property # makes it behave like an attribute: triage.needs_human_review
     def needs_human_review(self) -> bool:
         return (
             self.urgency == "Critical"
@@ -41,7 +41,7 @@ class Triage(BaseModel):
             or (self.urgency == "High" and self.category in ("Billing", "Account"))
         )
 
-
+# Format before saving, gets used in llm.py
 class Ticket(BaseModel):
     id: int | str
     message: str
