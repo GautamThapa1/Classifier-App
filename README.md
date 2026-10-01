@@ -1,6 +1,6 @@
 # Caregene Ticket Triage
 
-A web app that triages a batch of customer support tickets with AI and shows them in a dashboard for a support agent. Built for the Caregene Applied AI Engineer (Intern) take-home.
+A web app that triages a batch of customer support tickets with AI and shows them in a dashboard for a support agent.
 
 - **Live app:** https://classifier-app-3mdx.onrender.com/
 - **Repository:** https://github.com/GautamThapa1/Classifier-App
@@ -8,7 +8,7 @@ A web app that triages a batch of customer support tickets with AI and shows the
 
 ## What it does
 
-- Triages the 20 sample tickets (or an uploaded JSON file) with an LLM
+- Triages the 20 sample tickets (or an uploaded JSON file:max 50 tickets) with an LLM
 - Per ticket: urgency, category, sentiment, confidence, a short reasoning note, what cannot be verified from the message, and a draft reply
 - Dashboard: KPI cards, charts for urgency / category / sentiment, search, filters, sorting, pagination (15 per page), colour-coded badges, and a detail panel with the full message and an editable, copyable reply
 - Empty state, clear input errors, and per-ticket failure rows so one failed request does not discard the batch
@@ -18,30 +18,62 @@ A web app that triages a batch of customer support tickets with AI and shows the
 
 You need [uv](https://docs.astral.sh/uv/) and an OpenAI API key.
 
-```bash
-# 1. Install uv (once)
-curl -LsSf https://astral.sh/uv/install.sh | sh
+### Install uv
 
-# 2. Clone and install
+**Windows (PowerShell):**
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+**Linux:**
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Restart your terminal after installation so `uv` is available on your PATH.
+
+### Clone and install
+
+These commands work in PowerShell and Linux terminals:
+
+```sh
 git clone https://github.com/GautamThapa1/Classifier-App.git
 cd Classifier-App
-uv sync                    # creates .venv, installs pinned dependencies and the Python version
-
-# 3. Add your key
-cp .env.example .env       # then edit .env
-
-# 4. Run
-make run                   # or: uv run uvicorn app.main:app --reload
+uv sync
 ```
 
-Open http://127.0.0.1:8000.
+### Add your key
 
-`.env`
+Copy the example environment file, then edit `.env` and add your OpenAI API key.
 
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item .env.example .env
 ```
+
+**Linux:**
+
+```bash
+cp .env.example .env
+```
+
+```dotenv
 OPENAI_API_KEY=your_key_here
 OPENAI_MODEL=gpt-4o-mini
 ```
+
+### Run
+
+From the project directory, run this in PowerShell or Linux:
+
+```sh
+uv run uvicorn app.main:app --reload
+```
+
+Open http://127.0.0.1:8000.
 
 ### Using the app
 
@@ -54,11 +86,7 @@ Upload format: a JSON list of objects with an `id` and a `message` (`text`, `cus
 ### Other commands
 
 ```bash
-make con     # run 20 tickets 3 times; 60 initial model requests, plus any retries
-```
-
-```bash
-uv run python -m scripts.consistency     # equivalent command
+uv run python -m scripts.consistency     # run 20 tickets 3 times; 60 initial model requests, plus any retries
 ```
 
 <details>
@@ -78,7 +106,7 @@ uv add fastapi "uvicorn[standard]" openai jinja2 python-dotenv pydantic
 | Backend | FastAPI | Small, fast, Pydantic built in |
 | Environment | uv | One command to install pinned dependencies and the Python version |
 | AI | OpenAI `gpt-4o-mini`, temperature 0 | Cheap for 20 tickets, supports schema-enforced output, temperature 0 for consistent triage |
-| Structured output | Pydantic model passed as `response_format` | The schema is enforced during generation: valid JSON and valid enum values every time |
+| Structured output | Pydantic model passed as `response_format` | Defines the expected JSON structure and constrains label fields to their allowed `Literal` values |
 | Frontend | One HTML page, vanilla JS, Tailwind and Chart.js via CDN | No build step, easy to read and explain |
 | Storage | JSON files in `runs/` | 20 tickets do not need a database, and versioned files show prompt history |
 | Deploy | Render | Free tier, one start command |
