@@ -10,7 +10,7 @@ Classifies urgency, category, and sentiment, then drafts a safe, rule-checked re
 ![OpenAI](https://img.shields.io/badge/OpenAI-gpt--4o--mini-412991?logo=openai&logoColor=white)
 ![uv](https://img.shields.io/badge/uv-managed-DE5FE9)
 
-[🚀 **Live Demo**](https://classifier-app-3mdx.onrender.com) · [🎥 **Video Walkthrough**](https://youtu.be/Bc-Z8j2cBN0) · [📝 **Prompt History**](history/)
+[🚀 **Live Demo**](https://classifier-app-3mdx.onrender.com) · [🎥 **Video Walkthrough**](https://www.youtube.com/watch?v=NCgA6o9Qvq0) · [📝 **Prompt History**](history/)
 
 </div>
 
@@ -18,7 +18,7 @@ Classifies urgency, category, and sentiment, then drafts a safe, rule-checked re
 
 ## 📺 Demo
 
-[![Watch the demo](https://img.youtube.com/vi/Bc-Z8j2cBN0/maxresdefault.jpg)](https://youtu.be/Bc-Z8j2cBN0)
+[![Watch the demo](https://img.youtube.com/vi/NCgA6o9Qvq0/maxresdefault.jpg)](https://www.youtube.com/watch?v=NCgA6o9Qvq0)
 
 <!-- Optional: add a dashboard screenshot -->
 <!-- ![Dashboard screenshot](docs/dashboard.png) -->
