@@ -345,9 +345,8 @@ Six versions were tested on the same 20 tickets. Each one fixed earlier problems
 
 #### v6: Final
 **Changed:**
-- Replaced the examples with unique ones unrelated to the dataset.
+- Replaced the examples similar but unrelated to the dataset.
 - Clarified that urgency follows impact, not tone.
-- Added empty-message handling.
 - Added a code validator.
 
 **Result:**

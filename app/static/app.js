@@ -30,7 +30,7 @@ setTheme(document.documentElement.dataset.theme === "dark", false);
 themeToggle.addEventListener("change", () => setTheme(themeToggle.checked));
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const badge = v => `<span class="px-2 py-0.5 rounded-full text-xs font-medium ${BADGE[v] || "bg-slate-100 text-slate-600"}">${esc(v)}</span>`;
+const badge = v => `<span class="px-2 py-0.5 rounded-full text-xs font-medium ${BADGE[v] || "bg-slate-100 text-slate-600"} ${RANK[v] !== undefined ? "urgency-badge" : ""}">${esc(v)}</span>`;
 const show = t => { $("msg").textContent = t; $("msg").classList.toggle("hidden", !t); };
 
 function chart(id, type, counts) {
@@ -60,6 +60,7 @@ function chart(id, type, counts) {
     type,
     data: { labels, datasets: [{ data: values, backgroundColor, borderColor, borderWidth: 0 }] },
     options: {
+      animation: { duration: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 600 },
       maintainAspectRatio: false,
       plugins: { legend: { display: type !== "bar", position: "bottom", labels: { color: text } } },
       scales: type === "bar" ? {
@@ -78,7 +79,7 @@ function redrawCharts() {
 }
 
 function kpi(label, value, sub = "") {
-  return `<div class="bg-white border rounded-xl p-4"><p class="text-xs text-slate-500">${label}</p><p class="text-2xl font-semibold">${value}</p><p class="text-xs text-slate-400">${sub}</p></div>`;
+  return `<div class="motion-card bg-white border rounded-xl p-4"><p class="text-xs text-slate-500">${label}</p><p class="text-2xl font-semibold">${value}</p><p class="text-xs text-slate-400">${sub}</p></div>`;
 }
 
 function render() {
@@ -125,9 +126,9 @@ function renderRows() {
   page = Math.min(page, pages);
   const start = (page - 1) * PAGE;
   const shown = r.slice(start, start + PAGE);
-  $("rows").innerHTML = shown.map(t => {
+  $("rows").innerHTML = shown.map((t, index) => {
     const x = t.triage;
-    return `<tr class="border-t hover:bg-slate-50 cursor-pointer" data-id="${esc(t.id)}">
+    return `<tr class="ticket-row enter-up border-t hover:bg-slate-50 cursor-pointer" style="--stagger:${index}" data-id="${esc(t.id)}">
       <td data-label="ID" class="p-3 text-slate-500">${esc(t.id)}</td>
       <td data-label="Message" class="p-3 max-w-md whitespace-normal break-words">${esc(t.message)}</td>
       <td data-label="Urgency" class="p-3">${x ? badge(x.urgency) : badge("Failed")}</td>
@@ -185,7 +186,12 @@ function closeDetail() {
 
 async function run(body) {
   $("runBtn").disabled = true;
-  $("runBtn").textContent = "Triaging…";
+  $("runBtnLabel").textContent = "Triaging…";
+  $("buttonSpinner").classList.remove("hidden");
+  $("empty").classList.add("hidden");
+  $("loadingState").classList.remove("hidden");
+  $("loadingState").classList.add("flex");
+  $("dash").setAttribute("aria-busy", "true");
   show("");
   try {
     const r = await fetch("/api/triage", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body || {}) });
@@ -197,7 +203,12 @@ async function run(body) {
     show(e.message);
   } finally {
     $("runBtn").disabled = false;
-    $("runBtn").textContent = "Run sample batch";
+    $("runBtnLabel").textContent = "Run sample batch";
+    $("buttonSpinner").classList.add("hidden");
+    $("loadingState").classList.add("hidden");
+    $("loadingState").classList.remove("flex");
+    $("dash").setAttribute("aria-busy", "false");
+    $("empty").classList.toggle("hidden", data.tickets.length > 0);
   }
 }
 
