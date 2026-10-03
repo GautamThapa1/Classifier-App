@@ -5,7 +5,7 @@
 **AI-powered support-ticket triage for a health and caregiving app.**
 Classifies urgency, category, and sentiment, then drafts a safe, rule-checked reply.
 
-![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.12+-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
 ![OpenAI](https://img.shields.io/badge/OpenAI-gpt--4o--mini-412991?logo=openai&logoColor=white)
 ![uv](https://img.shields.io/badge/uv-managed-DE5FE9)
